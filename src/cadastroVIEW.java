@@ -2,8 +2,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-
-/**
+import java.awt.HeadlessException;
+import javax.swing.JOptionPane; /**
  *
  * @author Adm
  */
@@ -140,18 +140,38 @@ public class cadastroVIEW extends javax.swing.JFrame {
     }//GEN-LAST:event_cadastroNomeActionPerformed
 
     private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
-        ProdutosDTO produto = new ProdutosDTO();
+    try {
         String nome = cadastroNome.getText();
         String valor = cadastroValor.getText();
-        String status = "A Venda";
+
+        if (nome.isEmpty() || valor.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Preencha todos os campos!");
+            return;
+        }
+
+        ProdutosDTO produto = new ProdutosDTO();
         produto.setNome(nome);
         produto.setValor(Integer.parseInt(valor));
-        produto.setStatus(status);
-        
+        produto.setStatus("A Venda");
+
         ProdutosDAO produtodao = new ProdutosDAO();
         produtodao.cadastrarProduto(produto);
-        
+
+        JOptionPane.showMessageDialog(null, "Produto cadastrado com sucesso!");
+
+        // limpar campos
+        cadastroNome.setText("");
+        cadastroValor.setText("");
+
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(null, "O valor deve ser numérico!");
+    } catch (HeadlessException e) {
+        JOptionPane.showMessageDialog(null, "Erro ao cadastrar produto!");
+    }
+
+
     }//GEN-LAST:event_btnCadastrarActionPerformed
+
 
     private void btnProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProdutosActionPerformed
         listagemVIEW listagem = new listagemVIEW(); 
@@ -174,22 +194,16 @@ public class cadastroVIEW extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(cadastroVIEW.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(cadastroVIEW.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(cadastroVIEW.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(cadastroVIEW.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+        
+        //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new cadastroVIEW().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new cadastroVIEW().setVisible(true);
         });
     }
 
