@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-
+// teste de salvamento 
 /**
  *
  * @author Adm
@@ -24,7 +24,7 @@ public class ProdutosDAO {
 
     public void cadastrarProduto(ProdutosDTO produto) {
 
-        String sql = "INSERT INTO produtos (nome, valor, status) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO produtos (nome, valor, status) VALUES (?, ?, ?)"; // cadastro no banco
 
         try {
             conn = new conectaDAO().connectDB();
@@ -76,4 +76,27 @@ public class ProdutosDAO {
 
         return lista;
     }
+
+
+        public void venderProduto(int id) {
+
+    String sql = "UPDATE produtos SET status = 'Vendido' WHERE id = ?";
+
+    try {
+        conn = new conectaDAO().connectDB();
+        prep = conn.prepareStatement(sql);
+
+        prep.setInt(1, id);
+        prep.executeUpdate();
+
+        JOptionPane.showMessageDialog(null, "Produto vendido com sucesso!");
+
+        prep.close();
+        conn.close();
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, "Erro ao vender produto: " + e.getMessage());
+    }
+        }
 }
+
