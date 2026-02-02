@@ -1,0 +1,8 @@
+git branch melhorias
+git checkout melhorias
+git add .
+git commit -m "Descrição da funcionalidade"
+git push --set-upstream origin melhorias
+git checkout master
+git merge melhorias
+git push
